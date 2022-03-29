@@ -2,6 +2,7 @@
 using MQTTnet.Server;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
+using MessageHandler;
 
 var factory = new MqttFactory();
 
@@ -20,12 +21,11 @@ await server.StartAsync(serverOptions);
 
 var client = factory.CreateMqttClient();
 
-client.UseApplicationMessageReceivedHandler(msg =>
+var context = new ListenerContext();
+var handler = new Handler(context);
+client.UseApplicationMessageReceivedHandler(async msg =>
 {
-    var payloadText = System.Text.Encoding.UTF8.GetString(
-        msg?.ApplicationMessage?.Payload ?? Array.Empty<byte>());
-
-    Console.WriteLine($"Received msg: {payloadText}");
+    await handler.Handle(msg);
 });
 
 await client.ConnectAsync(clientOptions, CancellationToken.None);
