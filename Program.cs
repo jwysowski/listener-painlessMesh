@@ -42,6 +42,10 @@ await client.SubscribeAsync(
     new MqttTopicFilter
     {
         Topic = "gate/humidity"
+    },
+    new MqttTopicFilter
+    {
+        Topic = "gate/command"
     }
 );
 

@@ -77,10 +77,7 @@ namespace MessageHandler
 
             node.LastUpdate = log.Timestamp;
             node.InManualMode = _typesLUT.GetMode(log.Message[1]);
-
-            // node.TargetTemperature = node.InManualMode ? ;
             node.TargetHumidity = null;
-
             node.Arch = false;
 
             if (notInList)
