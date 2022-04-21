@@ -49,7 +49,7 @@ await client.SubscribeAsync(
     }
 );
 
-Console.WriteLine("Press any key to stop the server.");
+Console.WriteLine("Press enter to stop the server.");
 Console.ReadLine();
 
 await server.StopAsync();

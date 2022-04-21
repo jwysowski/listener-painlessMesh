@@ -37,6 +37,8 @@ namespace MessageHandler
             log.Type = _typesLUT.GetMessageType(log.Message[1]);
             if (log.Type != "Temperature" && log.Type != "Humidity")
                 _isCommand = true;
+            else
+                _isCommand = false;
 
             log.Value = Convert.ToDouble(log.Message.Substring(2, 5));
             log.Timestamp = System.DateTime.Now;
@@ -63,9 +65,6 @@ namespace MessageHandler
                     node.Temperature = log.Value;
                 else
                     node.Humidity = log.Value;
-
-                node.TargetTemperature = null;
-                node.TargetHumidity = null;
             }
             else
             {
@@ -75,9 +74,8 @@ namespace MessageHandler
                     node.TargetHumidity = log.Value;
             }
 
+            node.InManualMode = _isCommand ? _typesLUT.GetMode(log.Message[1]) : node.InManualMode;
             node.LastUpdate = log.Timestamp;
-            node.InManualMode = _typesLUT.GetMode(log.Message[1]);
-            node.TargetHumidity = null;
             node.Arch = false;
 
             if (notInList)
