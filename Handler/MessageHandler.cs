@@ -68,10 +68,19 @@ namespace MessageHandler
             }
             else
             {
-                if (_typesLUT.SetTemperature(log.Message[1]))
+                if (!_typesLUT.GetMode(log.Message[1]))
+                {
+                    node.TargetTemperature = null;
+                    node.TargetHumidity = null;
+                }
+                else if (_typesLUT.SetTemperature(log.Message[1]))
+                {
                     node.TargetTemperature = log.Value;
+                }
                 else
+                {
                     node.TargetHumidity = log.Value;
+                }
             }
 
             node.InManualMode = _isCommand ? _typesLUT.GetMode(log.Message[1]) : node.InManualMode;
